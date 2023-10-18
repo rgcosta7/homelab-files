@@ -1,0 +1,31 @@
+#8888888b.   .d8888b.   .d88888b.   .d8888b. 88888888888     d8888  d8888888888P
+#888   Y88b d88P  Y88b d88P" "Y88b d88P  Y88b    888        d88888  88888888888P
+#888    888 888    888 888     888 Y88b.         888       d88P888        d888P
+#888   d88P 888        888     888  "Y888b.      888      d88P 888       d888P
+#8888888P"  888        888     888     "Y88b.    888     d88P  888      d888P
+#888 T88b   888    888 888     888       "888    888    d88P   888     d888P
+#888  T88b  Y88b  d88P Y88b. .d88P Y88b  d88P    888   d8888888888    d888P
+#888   T88b  "Y8888P"   "Y88888P"   "Y8888P"     888  d88P     888   d888P
+
+
+version: '3'
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp # Only required if you are using Pi-hole as your DHCP server
+      - 80:80/tcp
+      - 443:443/tcp
+    environment:
+      - TZ=Europe/London
+      - WEBPASSWORD=your-super-secret-password
+    volumes:
+      - ./etc-pihole:/etc/pihole
+      - ./etc-dnsmasq.d:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
+      
+    restart: unless-stopped
