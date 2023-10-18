@@ -1,0 +1,126 @@
+#8888888b.   .d8888b.   .d88888b.   .d8888b. 88888888888     d8888  d8888888888P
+#888   Y88b d88P  Y88b d88P" "Y88b d88P  Y88b    888        d88888  88888888888P
+#888    888 888    888 888     888 Y88b.         888       d88P888        d888P
+#888   d88P 888        888     888  "Y888b.      888      d88P 888       d888P
+#8888888P"  888        888     888     "Y88b.    888     d88P  888      d888P
+#888 T88b   888    888 888     888       "888    888    d88P   888     d888P
+#888  T88b  Y88b  d88P Y88b. .d88P Y88b  d88P    888   d8888888888    d888P
+#888   T88b  "Y8888P"   "Y88888P"   "Y8888P"     888  d88P     888   d888P
+---
+###############################################################################
+#                                                                             #
+#                             Authelia configuration                          #
+#                                                                             #
+###############################################################################
+
+theme: dark
+
+default_redirection_url: https://auth.domain.uk/
+
+server:
+  host: 0.0.0.0
+  port: 9091
+  asset_path: /etc/authelia/assets/
+
+log:
+  level: info
+  format: json
+  file_path: /var/log/authelia.log
+
+totp:
+  issuer: auth.domain.uk
+
+ntp:
+  address: "3.uk.pool.ntp.org:123"
+  version: 4
+  max_desync: 3s
+  disable_startup_check: false
+
+authentication_backend:
+  file:
+    path: /etc/authelia/.users/users_database.yml
+    password:
+      algorithm: argon2id
+      iterations: 1
+      key_length: 32
+      salt_length: 16
+      memory: 1024
+      parallelism: 8
+
+access_control:
+  default_policy: deny
+  rules:
+    # no auth
+    - domain: 'home.domain.uk'
+      policy: bypass
+    # one factor
+    - domain:
+        - 'pihole.domain.uk'
+        - 'sonarr.m2.domain.uk'
+        - '*.m2.h0melab.uk'
+    # 2fa
+    - domain:
+        - 'luci.domain.uk'
+        - '*.s3.domain.uk'
+      policy: two_factor
+
+session:
+  name: authelia_session
+  expiration: 3600  # 1 hour
+  inactivity: 600  # 10 minutes
+  domain: h0melab.uk
+  same_site: lax
+  remember_me_duration: 7d
+
+regulation:
+  max_retries: 3
+  find_time: 120
+  ban_time: 300
+
+storage:
+  mysql:
+    host: 172.31.80.143
+    port: 3306
+    database: authelia
+    username: authelia
+
+notifier:
+  disable_startup_check: false
+  smtp:
+    host: smtp-relay.brevo.com
+    port: 587
+    timeout: 20s
+    username: admin@domain.com
+    sender: "Authentication Service <noreply@domain.uk>"
+    subject: "{title}"
+    startup_check_address: noreply@domain.uk
+    disable_require_tls: false
+    disable_html_emails: false
+    disable_starttls: false
+    tls:
+      skip_verify: false
+      minimum_version: TLS1.2
+
+identity_providers: ### OPTIONAL SETTING
+  oidc:
+    access_token_lifespan: 1h
+    authorize_code_lifespan: 1m
+    id_token_lifespan: 1h
+    refresh_token_lifespan: 90m
+    enable_client_debug_messages: false
+    enforce_pkce: public_clients_only
+    cors:
+      endpoints:
+        - authorization
+        - token
+        - revocation
+        - introspection
+      allowed_origins:
+        - "*"
+      allowed_origins_from_client_redirect_uris: false
+    clients:
+      - id: cloudflare
+        description: Cloudflare ZeroTrust
+        secret: YOURCLOUDFLAREZEROTRUSTSECRETHERE
+        authorization_policy: two_factor
+
