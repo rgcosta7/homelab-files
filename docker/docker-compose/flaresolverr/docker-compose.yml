@@ -8,25 +8,28 @@
 #888   T88b  "Y8888P"   "Y88888P"   "Y8888P"     888  d88P     888   d888P
 ---
 
-version: '3'
-
+version: "2.1"
 services:
-  uptimekuma:
-    image: louislam/uptime-kuma:latest
-    container_name: uptimekuma
-    
-    ports:
-      - 3001:3001
-      
-    volumes:
-      - uptimekuma:/app/data
-      
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
     restart: unless-stopped
+    
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Europe/London
 
-# You will need to have local-persist plugin installed
-volumes:
-    uptimekuma:
-        name: uptimekuma
-        driver: local-persist
-        driver_opts:
-            mountpoint: "/home/user/docker/uptimekuma/data" # Path where you going to safe the internal /data directory     
+    ports:
+      - 8191:8191
+
+    networks:
+      my_network:  # Created by docker with macvlan driver
+        ipv4_address: 192.168.xxx.xxx # IP in your network used to access to the service 
+    
+networks:
+  my_network:
+    external: true

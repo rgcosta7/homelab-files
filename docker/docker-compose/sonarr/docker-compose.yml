@@ -9,24 +9,33 @@
 ---
 
 version: '3'
-
 services:
-  uptimekuma:
-    image: louislam/uptime-kuma:latest
-    container_name: uptimekuma
-    
-    ports:
-      - 3001:3001
-      
-    volumes:
-      - uptimekuma:/app/data
-      
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
     restart: unless-stopped
 
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - sonarr:/config
+      - /media/tv:/tv
+      - /media/downloads/tv:/downloads #optional
+
+    networks:
+      my_network:  # Created by docker with macvlan driver
+        ipv4_address: 192.168.xxx.xxx # IP in your network used to access to the service 
+    
+networks:
+  my_network:
+    external: true
+    
 # You will need to have local-persist plugin installed
 volumes:
-    uptimekuma:
-        name: uptimekuma
+    sonarr:
+        name: sonarr
         driver: local-persist
         driver_opts:
-            mountpoint: "/home/user/docker/uptimekuma/data" # Path where you going to safe the internal /data directory     
+            mountpoint: "/home/user/docker/sonarr/data" # Path where you going to safe the internal /data directory 

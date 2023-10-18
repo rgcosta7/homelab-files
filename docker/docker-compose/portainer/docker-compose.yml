@@ -6,6 +6,7 @@
 #888 T88b   888    888 888     888       "888    888    d88P   888     d888P
 #888  T88b  Y88b  d88P Y88b. .d88P Y88b  d88P    888   d8888888888    d888P
 #888   T88b  "Y8888P"   "Y88888P"   "Y8888P"     888  d88P     888   d888P
+---
 
 version: '3'
 
@@ -13,7 +14,8 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
-    
+    restart: unless-stopped
+        
     ports:
       - 9000:9000
       - 9443:9443
@@ -23,8 +25,14 @@ services:
       - /etc/localtime:/etc/localtime:ro    
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer:/data
-      
-    restart: unless-stopped
+
+    networks:
+      my_network:  # Created by docker with macvlan driver
+        ipv4_address: 192.168.xxx.xxx # IP in your network used to access to the service 
+    
+networks:
+  my_network:
+    external: true
 
 # You will need to have local-persist plugin installed
 volumes:

@@ -6,13 +6,15 @@
 #888 T88b   888    888 888     888       "888    888    d88P   888     d888P
 #888  T88b  Y88b  d88P Y88b. .d88P Y88b  d88P    888   d8888888888    d888P
 #888   T88b  "Y8888P"   "Y88888P"   "Y8888P"     888  d88P     888   d888P
-
+---
 
 version: '3'
 services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
+    restart: unless-stopped
+
     ports:
       - 53:53/tcp
       - 53:53/udp
@@ -28,4 +30,10 @@ services:
     cap_add:
       - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
       
-    restart: unless-stopped
+    networks:
+      my_network:  # Created by docker with macvlan driver
+        ipv4_address: 192.168.xxx.xxx # IP in your network used to access to the service 
+    
+networks:
+  my_network:
+    external: true
