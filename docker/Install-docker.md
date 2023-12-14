@@ -72,29 +72,19 @@ sudo usermod -aG docker $USER
 ~~~
 
 
-
-## 6 - Configure default logging driver
-
-FFI:
-
-Set the log driver to Promtail
-
-
-
-
-## 7 - Create Docker network Macvlan
+Log out and try:
 
 ~~~bash
-docker network create -d macvlan --subnet=10.0.20.0/27 --gateway=10.0.20.30 -o parent=ens18 media
+docker version
 ~~~
 
 
 
-## 8 - Install Local Persist Volume Plugin for Docker
+## 6 - Install Local Persist Volume Plugin for Docker
 
 Manual as root:
 
-This is a manual installation and need to be run as a **ROOT**
+This is a manual installation and need to be run as a **ROOT** 
 
 
  - 1 Download the binary files and give execute permission:
