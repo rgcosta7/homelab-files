@@ -67,7 +67,7 @@ session:
   name: authelia_session
   expiration: 3600  # 1 hour
   inactivity: 600  # 10 minutes
-  domain: h0melab.uk
+  domain: domain.uk
   same_site: lax
   remember_me_duration: 7d
 
@@ -78,7 +78,7 @@ regulation:
 
 storage:
   mysql:
-    host: 172.31.80.143
+    host: address
     port: 3306
     database: authelia
     username: authelia
@@ -86,7 +86,7 @@ storage:
 notifier:
   disable_startup_check: false
   smtp:
-    host: smtp-relay.brevo.com
+    host: smtp.domain.com
     port: 587
     timeout: 20s
     username: admin@domain.com
