@@ -54,13 +54,13 @@ access_control:
       policy: bypass
     # one factor
     - domain:
-        - 'pihole.domain.uk'
-        - 'sonarr.m2.domain.uk'
-        - '*.m2.h0melab.uk'
+        - 'name1.domain.uk'
+        - 'sonarr.on.domain.uk'
+        - '*.on.domain.uk'
     # 2fa
     - domain:
         - 'luci.domain.uk'
-        - '*.s3.domain.uk'
+        - '*.my.domain.uk'
       policy: two_factor
 
 session:
