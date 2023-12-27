@@ -107,3 +107,12 @@ sudo systemctl enable docker-volume-local-persist
 sudo systemctl start docker-volume-local-persist
 sudo systemctl status --full --no-pager docker-volume-local-persist
 ```
+
+
+## 7 - Networking
+
+Create macvlan network in docker:
+
+```shell
+docker network create -d macvlan --subnet=10.0.20.0/27 --gateway=10.0.20.30 -o parent=ens18 media
+```

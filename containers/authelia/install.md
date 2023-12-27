@@ -333,7 +333,7 @@ Lastly set the right priviliges for the .users folder and files with:
 
 
 ~~~bash
-chmod 600 -R /etc/authelia/.users/
+sudo chmod 600 -R /etc/authelia/.users/
 ~~~
 
 ## Create your configuration.yml
@@ -413,7 +413,15 @@ And exit the mysql cli:
 exit
 ~~~
 
+### COnfigure postgreSQL for authelia
 
+
+~~~
+
+WIP
+
+
+~~~
 
 ## Startup Authelia
 
