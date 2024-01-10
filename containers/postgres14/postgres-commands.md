@@ -108,3 +108,15 @@ Create an account where the user can create databases:
 ~~~bash
 CREATE USER manuel WITH PASSWORD 'jw8s0F4' CREATEDB;
 ~~~
+
+Granting privileges on database to a user
+
+~~~bash
+GRANT all privileges on database mydb to myuser;
+~~~
+
+adding superuser permisson works
+
+~~~bash
+alter user <user> with superuser;
+~~~
