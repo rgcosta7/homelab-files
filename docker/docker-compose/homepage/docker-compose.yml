@@ -1,0 +1,30 @@
+version: "2"
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    environment:
+      PUID: 1000 
+      PGID: 1000   
+    restart: unless-stopped    
+    volumes:
+      - config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    ports:
+      - 3000:3000
+
+    networks:
+      services:
+        ipv4_address: 172.31.80.149
+
+networks:
+  services:
+    external: true           
+
+volumes:
+    config:
+        name: homer
+        driver: local-persist
+        driver_opts:
+            mountpoint: "/docker/homepage/data"    
