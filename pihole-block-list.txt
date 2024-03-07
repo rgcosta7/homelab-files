@@ -29,7 +29,8 @@
 0.0.0.0 analytics.pinterest.com
 0.0.0.0 trk.pinterest.com
 0.0.0.0 widgets.pinterest.com
-#  TikTok Trackers
+#  TikTok & Other Trackers
+0.0.0.0 cdn.sstatic.net
 0.0.0.0 ads-api.tiktok.com
 0.0.0.0 analytics.tiktok.com
 0.0.0.0 ads-sg.tiktok.com
